@@ -90,4 +90,5 @@ public class Photo {
     public void setAlbum(Album album) {
         this.album = album;
     }
+
 }
