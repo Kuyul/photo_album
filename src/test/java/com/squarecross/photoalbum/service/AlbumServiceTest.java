@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -81,10 +82,20 @@ class AlbumServiceTest {
     }
 
     @Test
-    void testGetAlbumList() {
-        Album album1 = new Album();
-        Album album2 = new Album();
-        Album album3 = new Album();
-        Album album4 = new Album();
+    void testChangeAlbumName() throws IOException {
+        //앨범 생성
+        AlbumDto albumDto = new AlbumDto();
+        albumDto.setAlbumName("변경전");
+        AlbumDto res = albumService.createAlbum(albumDto);
+
+        Long albumId = res.getAlbumId(); // 생성된 앨범 아이디 추출
+        AlbumDto updateDto = new AlbumDto();
+        updateDto.setAlbumName("변경후"); // 업데이트용 Dto 생성
+        albumService.changeName(albumId, updateDto);
+
+        AlbumDto updatedDto = albumService.getAlbum(albumId);
+
+        //앨범명 변경되었는지 확인
+        assertEquals("변경후", updatedDto.getAlbumName());
     }
 }

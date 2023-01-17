@@ -14,10 +14,7 @@ import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -67,5 +64,32 @@ public class AlbumService {
             albumDto.setThumbUrls(top4.stream().map(Photo::getThumbUrl).map(c -> Constants.PATH_PREFIX + c).collect(Collectors.toList()));
         }
         return albumDtos;
+    }
+
+    public AlbumDto changeName(Long AlbumId, AlbumDto albumDto){
+        Optional<Album> album = this.albumRepository.findById(AlbumId);
+        if (album.isEmpty()){
+            throw new NoSuchElementException(String.format("Album ID '%d'가 존재하지 않습니다", AlbumId));
+        }
+
+        Album updateAlbum = album.get();
+        updateAlbum.setAlbumName(albumDto.getAlbumName());
+        Album savedAlbum = this.albumRepository.save(updateAlbum);
+        return AlbumMapper.convertToDto(savedAlbum);
+    }
+
+    public AlbumDto deleteAlbum(Long albumId) throws IOException {
+        Optional<Album> res = this.albumRepository.findById(albumId);
+        if (res.isEmpty()){
+            throw new NoSuchElementException(String.format("Album ID '%d'가 존재하지 않습니다", albumId));
+        }
+        this.albumRepository.deleteById(albumId);
+        this.deleteAlbumDirectory(albumId);
+        return AlbumMapper.convertToDto(res.get());
+    }
+
+    private void deleteAlbumDirectory(Long albumId) throws IOException {
+        Files.delete(Paths.get(Constants.PATH_PREFIX + "/photos/original/" + albumId));
+        Files.delete(Paths.get(Constants.PATH_PREFIX + "/photos/thumb/" + albumId));
     }
 }

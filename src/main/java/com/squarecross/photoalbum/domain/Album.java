@@ -23,8 +23,7 @@ public class Album {
     @CreationTimestamp
     private Date createdAt;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "album")
-    @OrderBy("uploaded_at desc")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "album")
     private List<Photo> photos;
 
     public Album(){};
