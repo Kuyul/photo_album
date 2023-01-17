@@ -24,6 +24,7 @@ public class Album {
     private Date createdAt;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "album")
+    @OrderBy("uploaded_at desc")
     private List<Photo> photos;
 
     public Album(){};
