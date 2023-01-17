@@ -15,7 +15,7 @@ public class PhotoService {
     @Autowired
     private PhotoRepository photoRepository;
 
-    public PhotoDto getPhotoById(Long photoId) {
+    public PhotoDto getPhoto(Long photoId) {
         Optional<Photo> res = photoRepository.findById(photoId);
         if(res.isEmpty()){
             throw new EntityNotFoundException(String.format("파일 아이디 %d 를 찾을 수 없습니다", photoId));

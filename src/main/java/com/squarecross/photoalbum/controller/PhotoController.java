@@ -18,7 +18,7 @@ public class PhotoController {
 
     @RequestMapping(value="/{photoId}", method = RequestMethod.GET)
     public ResponseEntity<PhotoDto> getPhotoInfo(@PathVariable("photoId") final Long photoId){
-        PhotoDto photoDto = photoService.getPhotoById(photoId);
+        PhotoDto photoDto = photoService.getPhoto(photoId);
         return new ResponseEntity<>(photoDto, HttpStatus.OK);
     }
 }
