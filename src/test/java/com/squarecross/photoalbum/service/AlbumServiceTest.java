@@ -54,4 +54,9 @@ class AlbumServiceTest {
         AlbumDto resAlbum = albumService.getAlbum(savedAlbum.getAlbumId());
         assertEquals(2, resAlbum.getCount());
     }
+
+    @Test
+    void testAlbumCreate(){
+
+    }
 }
