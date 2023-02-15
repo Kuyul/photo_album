@@ -7,10 +7,12 @@ import com.squarecross.photoalbum.dto.AlbumDto;
 import com.squarecross.photoalbum.mapper.AlbumMapper;
 import com.squarecross.photoalbum.repository.AlbumRepository;
 import com.squarecross.photoalbum.repository.PhotoRepository;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -89,6 +91,8 @@ public class AlbumService {
     }
 
     private void deleteAlbumDirectory(Long albumId) throws IOException {
+        FileUtils.cleanDirectory(new File(Constants.PATH_PREFIX + "/photos/original/" + albumId));
+        FileUtils.cleanDirectory(new File(Constants.PATH_PREFIX + "/photos/thumb/" + albumId));
         Files.delete(Paths.get(Constants.PATH_PREFIX + "/photos/original/" + albumId));
         Files.delete(Paths.get(Constants.PATH_PREFIX + "/photos/thumb/" + albumId));
     }
